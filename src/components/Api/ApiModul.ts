@@ -1,4 +1,4 @@
-import { IApi, IProduct, ApiPostMethods } from '../../types';
+import { IApi, IProduct, TOrderResponse, ApiPostMethods } from '../../types';
 
 class ApiModul {
     private api: IApi;
@@ -12,9 +12,12 @@ class ApiModul {
         return response.items;
     }
 
-    async sendOrder(orderData: object): Promise<boolean> {
+    async sendOrder(orderData: TOrderResponse): Promise<TOrderResponse> {
         await this.api.post('/order', orderData, 'POST' as ApiPostMethods);
-        return true;
+        return { 
+            id: "",           
+            total: 0
+        };
     }
 }
 

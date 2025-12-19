@@ -40,6 +40,7 @@ console.log('Очистка корзины:', cart.clear());
 
 buyer.setData({payment: 'card', email: 'user@example.com', phone: '12345', address: 'г.Москва, ул.Ленина 372'});
 console.log('Данные покупателя:', buyer.getData());
+console.log('Ошибки валидации:', buyer.validate());
 console.log('Очистка данных покупки:', buyer.clear());
 console.log('Ошибки валидации:', buyer.validate());
 
