@@ -166,3 +166,187 @@ console.log('Полученные товары:', products);
 
 
 https://github.com/Leonard-Cherepanov/weblarek
+
+### class Header
+Отвечает за шапку страницы, включая кнопку корзины и отображение счётчика товаров. Обрабатывает пользовательские события, такие как открытие корзины.
+`constructor(protected events: IEvents, container: HTMLElement)` - В конструктор класса передается экземпляр брокера событий и контейнер.
+
+Поля:
+`basketButton: HTMLButtonElement` - открытие корзины с товарами;
+`counterElement: HTMLElement` - счетчик количества товаров в корзине;
+
+Методы класса:
+`set counter(value:number)` - Обновляет количество товаров, отображаемое в корзине;
+
+Interface:
+`HeaderData(counter:number)` - Используется для передачи информации о состоянии шапки, например в корзине;
+
+### class Gallery
+Отвечает за отображение коллекции HTML-элементов в указанном контейнере.
+`constructor(container: HTMLElement)` - В конструктор класса передается контейнер.
+
+Методы класса:
+`set catalog(items: HTMLElement[])` - позволяет обновлять содержимое галереи, заменяя текущие элементы на новые;
+
+Interface:
+`GalleryData (Catalog: HTMLElement[])` - содержит массив элементов, которые должны отображаться в галерее;
+
+### class Modal
+Отвечает за всплывающее окно.
+`constructor(container: HTMLElement, protected events: IEvents)` - В конструктор класса передается контейнер и экземпляр брокера событий.
+
+Поля:
+`contentElement : HTMLElement` - устанавливает содержимое модального окна;
+`closeButton: HTMLButtonElement` - кнопка закрытия модального окна;
+
+Методы класса: 
+`set content (item: HTML Element)` - Устанавливает содержимое модального окна. Заменяет текущее содержимое на новый HTMLElement;
+
+Interface: 
+`Modal Window (content: HTML Element)` - описывает структуру данных для модального окна;
+
+### class ProductBaseItemView
+Базовый класс для отображения информации о товаре в карточке.
+`constructor(container: HTMLElement)` - В конструктор класса передается контейнер.
+
+Поля:
+`_title: HTMLElement` - название товара;
+`_price: HTMLElement` - стоимость товара;
+`_image: HTMLImageElement` - изображение в карточке товара;
+`_category: HTMLElement` - категория товара;
+
+Методы класса:
+`set title (value: string)` - устанавливает название товара в карточке;
+`set price (value: number)` - устанавливает стоимость товара в карточке;
+`_getCategoryClassByCategory(key: CategoryKey): string` - используется для стилизации карточки в зависимости от категории;
+`set _image (value: string)` - устанавливает изображение товара;
+`set _category (value: string)` - устанавливает категорию товара;
+
+
+### class ProductCartItemView
+Отображает товар в корзине, добавляет функционал: отображения индекса товара в корзине, кнопка удаления товара с обработкой события.
+`constructor(container: HTMLElement, protected actions: IProductCartItemActions)` - в конструктор класса передается контейнер и объект с callback-функциями.
+
+Поля:
+`index: HTMLElement` - нумерация товара в списке корзины;
+`deleteButton: HTMLButtonElement` - кнопка удаления товара из корзины;
+
+Методы класса:
+`set index(value: number)` - устанавливает индекс товара в корзине для отображения;
+
+Interface:
+`IProductCartItemActions(onRemoveCartClick(event: MouseEvent): void;)` - Используется для передачи обработчиков событий;
+`ICartProduct(index:number)` - расширяет IProduct и добавляет индекс товара в корзине;
+
+### class ProductItemView
+Отображает карточку товара с полной информацией.
+`constructor(container: HTMLElement, protected actions: IProductViewItemActions)` - в конструктор класса передается контейнер и объект с callback-функциями.
+
+Поля:
+`_image: HTMLImageElement` - изображение в карточке товара;
+`_category: HTMLElement` - категория товара;
+`_description: HTMLElement` - описание товара;
+`_buyButton: HTMLButtonElement` - кнопка покупки товара;
+
+Методы класса:
+`set _description (value: string)` - устанавливает описание товара;
+`set buyButtonText(value: string)` - устанавливает текст на кнопке покупки;
+`set buyAllowed(value: boolean)` - включает или отключает кнопку покупки;
+
+Interface:
+`IProductViewItemActions(onAddToCartClick(event: MouseEvent): void)` - Интерфейс для действий с товаром в карточке;
+`IProductViewItemProduct (buyButtonText: string;
+    buyAllowed: boolean;)` - расширяет IProduct, добавляет свойства для управления отображением кнопки покупки;
+
+### class ProductGalleryItem
+Отображает элементы товара в галерее. Расширяет ProductBaseItemView, добавляя изображение и категорию. Поддерживает обработку клика по элементу.
+`constructor(container: HTMLElement, protected actions: IProductGalleryItemActions)` - в конструктор класса передается контейнер и объект с callback-функциями.
+
+Поля:
+`image: HTMLImageElement` - изображение в карточке товара;
+`category: HTMLElement` - категория товара;
+
+Методы класса:
+`set image (value: string)` - устанавливает изображение товара;
+`set category (value: string)` - устанавливает категорию товара;
+
+Interface:
+`IProductViewItemActions(onAddToCartClick(event: MouseEvent): void) ` - Интерфейс для действий с элементом галереи;
+
+
+### class CartView
+Отображает корзину товара. Управляет списком товаров, общей суммой и состоянием кнопки оформления заказа.
+`constructor(container: HTMLElement, protected events: IEvents)` - В конструктор класса передается контейнер и экземпляр брокера событий.
+
+Поля:
+`itemsContainer: HTMLElement` - список товаров в корзине;
+`totalPriceEl: number` - общая сумма товаров;
+`orderButton: HTMLElement` - кнопка оформления заказа; 
+
+Методы класса:
+`set items(value: HTMLElement[])` - устанавливает список товаров в корзине;
+`set totalPrice(value:number)` - устанавливает общую сумму корзины;
+`set orderButtonActive(value: boolean)` - устанавливает состояние кнопки оформления заказа;
+
+Interface:
+CartData - описывает состояние корзины;
+`items: HTMLElement[]`;
+`totalPrice: number`;
+
+### class BaseForm
+Базовый класс для форм. Управляет кнопкой действия и отображением ошибок.
+`constructor(container: HTMLElement, protected events: IEvents)` - В конструктор класса передается контейнер и экземпляр брокера событий.
+
+Поля:
+`actionButton: HTMLButtonElement` - кнопка для отправки формы или выполнения основной операции;
+`errorElement: HTMLElement` - элемент для отображения сообщений об ошибках формы;
+
+### class ContactsForm
+Контактная форма при оформлении заказа с указанием данных email и phone.
+`constructor(container: HTMLElement, events: IEvents)` - В конструктор класса передается контейнер и экземпляр брокера событий.
+
+Поля:
+`emailInput: HTMLInputElement` - поле ввода email пользователя;
+`phoneInput: HTMLInputElement` - поле ввода phone пользователя;
+
+### class OrderForm
+Форма выбора способа оплаты.
+`constructor(container: HTMLElement, events: IEvents)` - В конструктор класса передается контейнер и экземпляр брокера событий.
+
+Поля:
+`cardButton: HTMLButtonElement` - оплата картой;
+`cashButton: HTMLButtonElement` -  оплата при получении;
+`inputAddress: HTMLInputElement` - поле адреса доставки;
+
+### class OrderSuccess
+Отображает экран успешного завершения заказа.
+`constructor(protected events: IEvents, container: HTMLElement)` - В конструктор класса передается экземпляр брокера событий и контейнер.
+
+Поля:
+`description: HTMLElement` - элемент для отображения текста с суммой заказа;
+`doneButton: HTMLButtonElement` - кнопка закрытия экрана успешного оформления заказа;
+
+Методы класса: 
+`set totalPrice(value:number)` - устанавливает текст с суммой списанных средств;
+
+Interface
+`IOrderSuccess (totalPrice: number)` - описывает данные для экрана успешного заказа;
+
+
+### Список событий проекта
+`catalog:change` - получение массива товаров и создание карточек для галереи;
+`cart:change` - обновляет количество товаров в шапке и рендерит корзину;
+`buyer:change` - обрабатывает валидацию данных формы;
+`product:select` - добавляет товар в корзину и обновляет корзину;
+`basket:open` - рендерит содержимое корзины и открывает модальное окно;
+`cart:paymentDetails` - подставляет форму оплаты (OrderForm) в модальное окно;
+`cart:contactDetails` - подставляет форму контактов (ContactsForm) в модальное окно;
+`form:paymentMethodChange` - обновляет данные в модели Buyer и проверяет валидацию;
+`form:detailsChange` - обновляет данные покупателя и проверяет валидацию;
+`cart:done` - открывает окно успешного завершения заказа (OrderSuccess), очищает корзину и данные покупателя;
+`order:done` - закрывает модальное окно;
+`modal:close` - закрывает модальное окно;
+`fetchAndSaveProducts` - Асинхронно получает товары с сервера через ApiService и сохраняет их в каталог. Метод выводит результат выполнения запроса или сообщение об ошибке в консоль;
+`renderBasketModal` - Рендерит содержимое корзины в модальном окне. Создает экземпляры ProductCartItemView для каждого товара в корзине. Обновляет состояние кнопки оформления и общую сумму заказа.;
+`renderProductViewItem` - Создает карточку товара для модального окна каталога. Настраивает кнопку покупки с учетом наличия товара в корзине;
+`renderProductViewItemModal` - Отображает модальное окно с карточкой товара. Использует renderProductViewItem для генерации контента;

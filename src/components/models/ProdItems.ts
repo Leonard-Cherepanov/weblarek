@@ -1,11 +1,24 @@
 import { IProduct } from '../../types';
+import {IEvents} from "../base/Events.ts";
 
 class ProdItems {
     private products: IProduct[] = [];
     private selectedProduct: IProduct | null = null;
 
+    constructor(
+        private _imageCDN: string,
+        private _events: IEvents,
+    ) {
+    }
+
     setProducts(products: IProduct[]): void {
-        this.products = products;
+        this.products = products.map((product) => {
+            product.image = this._imageCDN + product.image;
+
+            return product;
+        });
+
+        this._events.emit("catalog:update");
     }
 
     getProducts(): IProduct[] {

@@ -1,22 +1,34 @@
 import { IProduct } from '../../types';
+import {IEvents} from "../base/Events.ts";
 
 class Cart {
     private items: IProduct[] = [];
+
+    constructor(private events: IEvents) {}
+
 
     getItems(): IProduct[] {
         return this.items;
     }
 
-    addItem(item: IProduct): void {
+    addItem(item: IProduct): boolean {
+        if (this.hasItem(item.id)) {
+            return false;
+        }
         this.items.push(item);
+        this.events.emit("cart:change");
+
+        return true;
     }
 
     removeItem(item: IProduct): void {
         this.items = this.items.filter(cartItem => cartItem.id !== item.id);
+        this.events.emit("cart:change");
     }
 
     clear(): void {
         this.items = [];
+        this.events.emit("cart:change");
     }
 
     getTotalPrice(): number {
