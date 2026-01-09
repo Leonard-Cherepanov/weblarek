@@ -22,6 +22,8 @@ import {OrderForm} from "./components/View/Forms/OrderForm.ts";
 import {ContactsForm} from "./components/View/Forms/ContactsForm.ts";
 import {OrderSuccess} from "./components/View/Order.ts";
 
+import {ensureElement} from "./utils/utils.ts";
+
 //создаем экземпляры классов
 const events = new EventEmitter();
 const prodItems = new ProdItems(CDN_URL, events);
@@ -36,19 +38,7 @@ const apiModul = new ApiModul(api);
 async function fetchAndSaveProducts() {
     try {
         const products = await apiModul.fetchProducts();
-        prodItems.setProducts(products);
-        const galleryItems = prodItems.getProducts().map((product: IProduct) => {
-            const cardView = new ProductGalleryItem(
-                cloneTemplate(cardCatalogTmpl),
-                {
-                    onClick: () => events.emit('product:select', product),
-                }
-            );
-            return cardView.render(product);
-        });
-
-        gallery.render({ catalog: galleryItems });
-
+        prodItems.setProducts(products); // Модель сама эмитит событие
     } catch (error) {
         console.error('Ошибка получения каталога:', error);
     }
@@ -56,17 +46,35 @@ async function fetchAndSaveProducts() {
 
 fetchAndSaveProducts();
 
+
+function renderProductGallery(products: IProduct[]): void {
+    const galleryItems = products.map((product: IProduct) => {
+        const cardView = new ProductGalleryItem(
+            cloneTemplate(cardCatalogTmpl),
+            {
+                onClick: () => events.emit('product:select', product),
+            }
+        );
+        return cardView.render(product);
+    });
+
+    gallery.render({ catalog: galleryItems });
+}
+
+events.on('catalog:updated', renderProductGallery);
+
 // header
-const headerEl = document.querySelector('.header') as HTMLElement;
+// const headerEl = document.querySelector('.header') as HTMLElement;
+const headerEl = ensureElement<HTMLElement>('.header');
 const header = new Header(events, headerEl);
 ///
 
 /// MODAL
-const modalTmpl = document.querySelector('#modal-container') as HTMLElement;
+const modalTmpl = ensureElement<HTMLElement>('#modal-container');
 const modal = new Modal(modalTmpl, events);
 ////
 
-const galleryEl = document.querySelector('.gallery') as HTMLElement;
+const galleryEl = ensureElement<HTMLElement>('.gallery');
 const cardCatalogTmpl = document.querySelector('#card-catalog') as HTMLTemplateElement;
 const modalItemTmpl = document.querySelector('#card-preview') as HTMLTemplateElement;
 
@@ -94,7 +102,7 @@ function renderBasketModal() {
             {
                 onRemoveCartClick() {
                     cart.removeItem(product);
-                    events.emit("cart:change", product);
+                    events.emit("cart:change");
 
                     renderBasketModal();
                 },
@@ -115,9 +123,7 @@ function renderBasketModal() {
 }
 
 events.on("basket:open", () => {
-    renderBasketModal();
-
-    modal.open();
+    modal.open()
 });
 
 events.on("cart:paymentDetails", () => {
@@ -209,7 +215,7 @@ events.on("form:submitOrder", async () => {
 
 
 events.on("order:done", () => {
-    events.emit('modal:close');
+    modal.close();
 });
 
 events.on("modal:close", () => {

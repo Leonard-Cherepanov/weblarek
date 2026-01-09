@@ -4,9 +4,9 @@ import {IEvents} from "../base/Events.ts";
 class Buyer {
     private data: IBuyer = {
         payment: null,
-        email: null,
-        phone: null,
-        address: null,
+        email: '',
+        phone: '',
+        address: '',
     };
 
     constructor(private events: IEvents) {}
@@ -14,7 +14,7 @@ class Buyer {
     setData(data: Partial<IBuyer>): void {
         this.data = { ...this.data, ...data };
 
-        this.events.emit("buyer:update");
+        this.events.emit("buyer:update", this.data);
     }
 
     getData(): IBuyer {
@@ -24,12 +24,12 @@ class Buyer {
     clear(): void {
         this.data = {
             payment: null,
-            email: null,
-            phone: null,
-            address: null,
+            email: '',
+            phone: '',
+            address: '',
         };
 
-        this.events.emit("buyer:clear");
+        this.events.emit("buyer:clear", this.data);
     }
 
     validate(): { [key in keyof IBuyer]?: string } {

@@ -17,8 +17,6 @@ class Cart {
         }
         this.items.push(item);
         this.events.emit("cart:change");
-
-        return true;
     }
 
     removeItem(item: IProduct): void {

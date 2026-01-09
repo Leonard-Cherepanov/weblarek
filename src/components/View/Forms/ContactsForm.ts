@@ -41,13 +41,13 @@ export class ContactsForm extends BaseForm<ContactsFormData> {
     }
 
     protected onSubmit(): void {
-        const orderData = {
-            buyer: {
-                email: this.emailInput.value,
-                phone: this.phoneInput.value,
-            }
-        };
+        // const orderData = {
+        //     buyer: {
+        //         email: this.emailInput.value,
+        //         phone: this.phoneInput.value,
+        //     }
+        // };
 
-        this.events.emit('form:submitOrder', orderData);
+        this.events.emit('form:submitOrder');
     }
 }

@@ -13,11 +13,8 @@ class ApiModul {
     }
 
     async sendOrder(orderData: TOrderResponse): Promise<TOrderResponse> {
-        await this.api.post('/order', orderData, 'POST' as ApiPostMethods);
-        return { 
-            id: "",           
-            total: 0
-        };
+        const response = await this.api.post('/order', orderData, 'POST' as ApiPostMethods);
+        return response;
     }
 }
 

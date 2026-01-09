@@ -18,7 +18,7 @@ class ProdItems {
             return product;
         });
 
-        this._events.emit("catalog:update");
+        this._events.emit("catalog:update",this.products);
     }
 
     getProducts(): IProduct[] {

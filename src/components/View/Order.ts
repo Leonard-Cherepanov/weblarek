@@ -1,4 +1,5 @@
 import {ensureElement} from "../../utils/utils.ts";
+// мы импортируем только одну фукнцию
 import {Component} from "../base/Component.ts"
 import type { IEvents } from "../base/Events.ts";
 
