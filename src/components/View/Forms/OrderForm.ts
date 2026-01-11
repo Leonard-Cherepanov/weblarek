@@ -60,4 +60,5 @@ export class OrderForm extends BaseForm {
         this.cardButton.classList.toggle('button_alt-active', method === 'card');
         this.cashButton.classList.toggle('button_alt-active', method === 'cash');
     }
+
 }

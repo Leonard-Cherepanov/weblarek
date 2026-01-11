@@ -13,8 +13,7 @@ class Buyer {
 
     setData(data: Partial<IBuyer>): void {
         this.data = { ...this.data, ...data };
-
-        this.events.emit("buyer:update", this.data);
+        this.events.emit("form:change");
     }
 
     getData(): IBuyer {
@@ -29,7 +28,7 @@ class Buyer {
             address: '',
         };
 
-        this.events.emit("buyer:clear", this.data);
+        this.events.emit("form:change");
     }
 
     validate(): { [key in keyof IBuyer]?: string } {

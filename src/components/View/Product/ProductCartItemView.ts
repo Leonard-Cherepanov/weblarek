@@ -20,13 +20,8 @@ export class ProductCartItemView extends ProductBaseItemView<ICartProduct> {
         this._index = ensureElement<HTMLElement>('.basket__item-index', this.container);
         this._deleteButton = ensureElement<HTMLButtonElement>('.basket__item-delete', this.container);
 
-    //     this._deleteButton.addEventListener('click', this.actions.onRemoveCartClick);
+        this._deleteButton.addEventListener('click', this.actions.onRemoveCartClick);
     }
-        // Вешаем обработчик внутри компонента
-        this._deleteButton.addEventListener('click', () => {
-            this.events.emit('cart:remove', this.data); // эмитим событие с данными товара
-        });
-    
 
     set index(value: number) {
         this._index.textContent = String(value);

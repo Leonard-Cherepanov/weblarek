@@ -6,7 +6,6 @@ class Cart {
 
     constructor(private events: IEvents) {}
 
-
     getItems(): IProduct[] {
         return this.items;
     }
@@ -17,6 +16,7 @@ class Cart {
         }
         this.items.push(item);
         this.events.emit("cart:change");
+        return true;
     }
 
     removeItem(item: IProduct): void {
