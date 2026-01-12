@@ -1,4 +1,5 @@
 import { IBuyer } from '../../types';
+import { IOrder } from '../../types';
 import {IEvents} from "../base/Events.ts";
 
 class Buyer {
@@ -19,6 +20,15 @@ class Buyer {
     getData(): IBuyer {
         return this.data;
     }
+
+    getOrderData(): Partial<IOrder> {
+    return {
+        payment: this.data.payment,
+        address: this.data.address || '',
+        email: this.data.email || '',
+        phone: this.data.phone || '',
+    };
+}
 
     clear(): void {
         this.data = {

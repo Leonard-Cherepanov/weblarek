@@ -14,11 +14,10 @@ class ProdItems {
     setProducts(products: IProduct[]): void {
         this.products = products.map((product) => {
             product.image = this._imageCDN + product.image;
-
             return product;
         });
 
-        this._events.emit("catalog:update",this.products);
+        this._events.emit("catalog:update", this.products);
     }
 
     getProducts(): IProduct[] {
@@ -31,6 +30,8 @@ class ProdItems {
 
     setSelectedProduct(product: IProduct): void {
         this.selectedProduct = product;
+        // Можно эмитировать событие, если нужно
+        // this._events.emit("product:selected", product);
     }
 
     getSelectedProduct(): IProduct | null {

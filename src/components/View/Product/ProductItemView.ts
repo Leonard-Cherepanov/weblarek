@@ -28,9 +28,12 @@ export class ProductItemView extends ProductBaseItemView<IProductViewItemProduct
         this._description = ensureElement<HTMLElement>('.card__text', this.container);
         this._buyButton = ensureElement<HTMLButtonElement>('.card__button', this.container);
 
-        this._buyButton.addEventListener('click', (event) => {
-            actions.onCartBtnClick(event);
-        });
+        // Вешаем обработчик через конструктор
+        if (this.actions.onCartBtnClick) {
+            this._buyButton.addEventListener('click', (event) => {
+                this.actions.onCartBtnClick(event);
+            });
+        }
     }
 
     set description (value: string) {
