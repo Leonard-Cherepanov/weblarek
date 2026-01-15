@@ -5,7 +5,7 @@ export interface IApi {
     post<T extends object>(uri: string, data: object, method?: ApiPostMethods): Promise<T>;
 }
 
-type TPayment = 'card' | 'cash' | null;
+export type TPayment = 'card' | 'cash' | null;
 
 export interface IProduct {
     id: string;
@@ -25,7 +25,7 @@ export interface IBuyer {
 
 export interface IOrder {
     items: string[];
-    payment: TPayment;
+    payment: 'card' | 'cash'; // Не может быть null при отправке
     address: string;
     email: string;
     phone: string;

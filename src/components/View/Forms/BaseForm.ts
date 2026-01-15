@@ -1,11 +1,11 @@
-import {ensureElement} from "../../../utils/utils.ts";
-import {Component} from "../../base/Component.ts"
-import type {IEvents} from "../../base/Events.ts";
+import { ensureElement } from "../../../utils/utils.ts";
+import { Component } from "../../base/Component.ts"
+import type { IEvents } from "../../base/Events.ts";
 
 export interface BaseFormData {}
 
 export abstract class BaseForm<T extends BaseFormData = BaseFormData> extends Component<T> {
-    protected actionButton: HTMLButtonElement;
+    public actionButton: HTMLButtonElement;
     protected errorElement: HTMLElement;
     protected abstract onSubmit(): void;
 
@@ -21,7 +21,6 @@ export abstract class BaseForm<T extends BaseFormData = BaseFormData> extends Co
         });
     }
 
-
     public setError(message: string) {
         this.errorElement.textContent = message;
         this.actionButton.disabled = true;
@@ -30,5 +29,13 @@ export abstract class BaseForm<T extends BaseFormData = BaseFormData> extends Co
     public clearError() {
         this.errorElement.textContent = '';
         this.actionButton.disabled = false;
+    }
+
+    // Переопределяем render для безопасной работы с данными
+    render(data?: Partial<T>): HTMLElement {
+        if (data) {
+            Object.assign(this as object, data);
+        }
+        return this.container;
     }
 }

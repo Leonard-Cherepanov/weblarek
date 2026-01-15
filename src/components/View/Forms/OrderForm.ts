@@ -1,8 +1,13 @@
 import { BaseForm } from "./BaseForm.ts";
 import type { IEvents } from "../../base/Events.ts";
-import {ensureElement} from "../../../utils/utils.ts";
+import { ensureElement } from "../../../utils/utils.ts";
 
-export class OrderForm extends BaseForm {
+interface OrderFormData {
+    payment?: 'card' | 'cash' | null;
+    address?: string;
+}
+
+export class OrderForm extends BaseForm<OrderFormData> {
     private cardButton: HTMLButtonElement;
     private cashButton: HTMLButtonElement;
     private inputAddress: HTMLInputElement;
@@ -12,11 +17,10 @@ export class OrderForm extends BaseForm {
 
         this.cardButton = ensureElement<HTMLButtonElement>('button[name="card"]', this.container);
         this.cashButton = ensureElement<HTMLButtonElement>('button[name="cash"]', this.container);
-        this.inputAddress = ensureElement<HTMLInputElement>('input[name="address"]', this.container)
+        this.inputAddress = ensureElement<HTMLInputElement>('input[name="address"]', this.container);
 
         this.cardButton.addEventListener('click', () => {
             this.selectPayment('card');
-
             this.events.emit('form:paymentMethodChange', {
                 field: 'payment',
                 value: 'card',
@@ -25,7 +29,6 @@ export class OrderForm extends BaseForm {
 
         this.cashButton.addEventListener('click', () => {
             this.selectPayment('cash');
-
             this.events.emit('form:paymentMethodChange', {
                 field: 'payment',
                 value: 'cash',
@@ -40,15 +43,13 @@ export class OrderForm extends BaseForm {
         });
     }
 
-    set card(value: string) {
-        this.cardButton.value = value;
+    set payment(value: 'card' | 'cash' | null) {
+        if (value === 'card' || value === 'cash') {
+            this.selectPayment(value);
+        }
     }
 
-    set cash(value: string) {
-        this.cashButton.value = value;
-    }
-
-    set address(value:string) {
+    set address(value: string) {
         this.inputAddress.value = value;
     }
 
@@ -56,9 +57,8 @@ export class OrderForm extends BaseForm {
         this.events.emit('cart:contactDetails');
     }
 
-    private selectPayment(method: 'card' | 'cash') {
+    public selectPayment(method: 'card' | 'cash'): void {
         this.cardButton.classList.toggle('button_alt-active', method === 'card');
         this.cashButton.classList.toggle('button_alt-active', method === 'cash');
     }
-
 }

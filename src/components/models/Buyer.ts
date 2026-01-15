@@ -1,6 +1,6 @@
 import { IBuyer } from '../../types';
 import { IOrder } from '../../types';
-import {IEvents} from "../base/Events.ts";
+import { IEvents } from "../base/Events.ts";
 
 class Buyer {
     private data: IBuyer = {
@@ -21,14 +21,21 @@ class Buyer {
         return this.data;
     }
 
-    getOrderData(): Partial<IOrder> {
-    return {
-        payment: this.data.payment,
-        address: this.data.address || '',
-        email: this.data.email || '',
-        phone: this.data.phone || '',
-    };
-}
+    getOrderData(): IOrder {
+        // Проверяем, что все обязательные поля заполнены
+        if (!this.data.payment || !this.data.address || !this.data.email || !this.data.phone) {
+            throw new Error('Не все обязательные поля заполнены');
+        }
+
+        return {
+            payment: this.data.payment,
+            address: this.data.address,
+            email: this.data.email,
+            phone: this.data.phone,
+            items: [], // Будет добавлено позже
+            total: 0, // Будет добавлено позже
+        };
+    }
 
     clear(): void {
         this.data = {
@@ -58,7 +65,11 @@ class Buyer {
         }
         return errors;
     }
-}
 
+    isValid(): boolean {
+        const errors = this.validate();
+        return Object.keys(errors).length === 0;
+    }
+}
 
 export default Buyer;

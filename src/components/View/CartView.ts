@@ -1,5 +1,5 @@
-import {ensureElement} from "../../utils/utils.ts";
-import {Component} from "../base/Component.ts"
+import { ensureElement } from "../../utils/utils.ts";
+import { Component } from "../base/Component.ts"
 import type { IEvents } from "../base/Events.ts";
 
 interface CartData {
@@ -22,7 +22,7 @@ export class CartView extends Component<CartData> {
 
         this.orderButton.addEventListener('click', () => {
             this.events.emit('cart:paymentDetails');
-        })
+        });
     }
 
     set items(value: HTMLElement[]) {
@@ -37,4 +37,8 @@ export class CartView extends Component<CartData> {
         this.totalPriceEl.textContent = `${value} синапсов`;
     }
 
+    render(data?: Partial<CartData>): HTMLElement {
+        Object.assign(this as object, data ?? {});
+        return this.container;
+    }
 }

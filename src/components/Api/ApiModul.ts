@@ -1,4 +1,4 @@
-import { IApi, IProduct,IOrder, TOrderResponse, ApiPostMethods } from '../../types';
+import { IApi, IProduct, IOrder, TOrderResponse, ApiPostMethods } from '../../types';
 
 class ApiModul {
     private api: IApi;
@@ -8,12 +8,12 @@ class ApiModul {
     }
 
     async fetchProducts(): Promise<IProduct[]> {
-        const response = await this.api.get<{ items: IProduct[] }>('/product');
+        const response = await this.api.get<{ items: IProduct[]; total: number }>('/product');
         return response.items;
     }
 
     async sendOrder(orderData: IOrder): Promise<TOrderResponse> {
-        const response = await this.api.post('/order', orderData, 'POST' as ApiPostMethods);
+        const response = await this.api.post<TOrderResponse>('/order', orderData, 'POST' as ApiPostMethods);
         return response;
     }
 }

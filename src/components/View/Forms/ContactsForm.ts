@@ -1,10 +1,10 @@
-import {BaseForm, BaseFormData} from "./BaseForm.ts";
+import { BaseForm } from "./BaseForm.ts";
 import type { IEvents } from "../../base/Events.ts";
-import {ensureElement} from "../../../utils/utils.ts";
+import { ensureElement } from "../../../utils/utils.ts";
 
-interface ContactsFormData extends BaseFormData{
-    email: string | null;
-    phone: string | null;
+interface ContactsFormData {
+    email?: string;
+    phone?: string;
 }
 
 export class ContactsForm extends BaseForm<ContactsFormData> {
@@ -41,13 +41,6 @@ export class ContactsForm extends BaseForm<ContactsFormData> {
     }
 
     protected onSubmit(): void {
-        // const orderData = {
-        //     buyer: {
-        //         email: this.emailInput.value,
-        //         phone: this.phoneInput.value,
-        //     }
-        // };
-
         this.events.emit('form:submitOrder');
     }
 }
