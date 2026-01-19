@@ -100,13 +100,6 @@ const modalItem = new ProductItemView(
     },
 );
 
-// ОБРАБОТКА СОБЫТИЯ cart:change
-events.on("cart:change", () => {
-    header.render({
-        counter: cart.getItemCount(),
-    });
-});
-
 // Функция для обновления вида корзины
 function updateBasketView() {
     const cartItems = cart.getItems().map((product: IProduct, index) => {
@@ -132,9 +125,20 @@ function updateBasketView() {
     });
 }
 
+// Обновляем представление корзины при изменении
+events.on("cart:change", () => {
+    // Обновляем счетчик в заголовке
+    header.render({
+        counter: cart.getItemCount(),
+    });
+    
+    // Обновляем представление корзины
+    updateBasketView();
+});
+
 // Обработчик открытия корзины
 events.on("basket:open", () => {
-    updateBasketView();
+    // Просто показываем уже обновленное представление корзины
     modal.content = cartView.render();
     modal.open();
 });
